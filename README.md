@@ -1,46 +1,27 @@
-## 配置详情
+# Android记事本应用
 
-### 1. `使用JDK9的版本`
+这是一个基于Android的记事本应用，允许用户创建、编辑和管理笔记。该应用使用NoSQL数据库存储数据，为用户生成的内容提供灵活、可扩展的存储解决方案。
 
-### 2. `gradle-wrapper.properties`
+## 功能
 
-请使用以下配置的 `distributionUrl`：
+### 1. **NoteList界面显示时间戳**
+   - **功能描述**：NoteList界面现在为每个笔记条目显示时间戳。
+   - **实现方式**：当笔记被创建或修改时，应用会自动生成并存储时间戳。这个时间戳会在主界面的笔记列表中显示。
+ #### 截图展示：
+   ![NoteList显示时间戳](images/001.png)
+### 2. **笔记查询功能**
+   - **功能描述**：新增了按标题或内容搜索笔记的功能。
+   - **实现方式**：用户可以在搜索框中输入关键字，应用会根据标题或内容与搜索词匹配的笔记进行筛选，方便用户快速找到特定笔记。
+ #### 截图展示：
+   ![搜索笔记](images/0011.png)
+### 3. **排序功能**
+   - **功能描述**：笔记现在可以按时间（时间顺序）或标题（字母顺序）进行排序。
+   - **实现方式**：用户可以在NoteList界面中的菜单中选择排序方式，笔记会根据选定的方式重新排列，按创建或修改时间排序，或按标题字母排序。
+ #### 截图展示：
+   ![排序](images/timestamp_demo.png)
+### 4. **更改记事本背景**
+   - **功能描述**：用户现在可以更改记事本界面的背景。
+   - **实现方式**：在设置或选项菜单中，用户可以选择不同的背景主题或图片，使记事本界面更加个性化。
+ #### 截图展示：
+   ![NoteList更改记事本背景](images/timestamp_demo.png)
 
-![Alt Text](./001.png)
-
-```properties
-distributionUrl=https\://services.gradle.org/distributions/gradle-6.7.1-bin.zip
-```
-
-### 3.  `build.gradle(notepad)`
-classpath请使用3.4.0:
-
-![Alt Text](./002.png)
-
-```properties
-classpath="com.android.tools.build:gradle:3.4.0"
-```
-### 4. `build成功之后`
-#### 4.1 `Error:Execution failed for task ':app:packageDebug'... 出现这个报错`
-build.gradle（:app）中的 android{ ... } 中 添加：
-
-![Alt Text](./003.png)
-
-```properties
-packagingOptions {
-    exclude 'META-INF/DEPENDENCIES.txt'
-    exclude 'META-INF/LICENSE.txt'
-    exclude 'META-INF/NOTICE.txt'
-    exclude 'META-INF/NOTICE'
-    exclude 'META-INF/LICENSE'
-    exclude 'META-INF/DEPENDENCIES'
-    exclude 'META-INF/notice.txt'
-    exclude 'META-INF/license.txt'
-    exclude 'META-INF/dependencies.txt'
-    exclude 'META-INF/LGPL2.1'
-}
-```
-#### 4.2 `com.android.ide.common.signing.KeytoolException: Failed to read key AndroidDebugKey from store出现这个问题`
-请删除以下两个文件并clean build之后rebuild（此文件的地址请看报错信息）:
-
-![Alt Text](./004.png)
