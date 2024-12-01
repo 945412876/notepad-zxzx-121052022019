@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 添加笔记 -->
+    <item android:id="@+id/menu_add"
+        android:icon="@drawable/ic_menu_compose"
+        android:title="@string/menu_add"
+        android:alphabeticShortcut='a'
+        android:showAsAction="always" />
+
+    <!-- 粘贴笔记 -->
+    <item android:id="@+id/menu_paste"
+        android:icon="@drawable/ic_menu_compose"
+        android:title="@string/menu_paste"
+        android:alphabeticShortcut='p' />
+
+    <item
+        android:id="@+id/search"
+        android:title="Search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:showAsAction="always|collapseActionView"
+        android:actionViewClass="android.widget.SearchView" />
+    <item
+        android:id="@+id/menu_sort"
+        android:title="Sort"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/menu_sort_by_title"
+                android:title="Sort by Title"
+                android:showAsAction="never"/>
+            <item
+                android:id="@+id/menu_sort_by_date"
+                android:title="Sort by Modification Date"
+                android:showAsAction="never"/>
+        </menu>
+    </item>
+
+</menu>
