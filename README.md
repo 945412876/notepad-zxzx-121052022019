@@ -18,7 +18,71 @@
    ![排序](images/002.png)
       ![排序（按时间戳）](images/0021.png)
         ![排序(按照字符)](images/0022.png)
-        #### 代码实现：（```java）
+        #### 代码实现：
+        
+         private void setupAdapter() {
+        // 设置排序条件
+        String orderBy = sortByTitle ? NotePad.Notes.COLUMN_NAME_TITLE + " ASC" : NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE + " DESC";
+
+        currentCursor = managedQuery(
+                getIntent().getData(),
+                PROJECTION,
+                null,
+                null,
+                orderBy
+        );
+
+        // The names of the cursor columns to display in the view
+        String[] dataColumns = { NotePad.Notes.COLUMN_NAME_TITLE, NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE };
+        int[] viewIDs = { android.R.id.text1, R.id.timestamp_text };
+
+        adapter = new SimpleCursorAdapter(
+                this,
+                R.layout.noteslist_item,
+                currentCursor,
+                dataColumns,
+                viewIDs
+        ) {
+            @Override
+            public void bindView(View view, Context context, Cursor cursor) {
+                super.bindView(view, context, cursor);
+
+                // 获取时间戳并格式化
+                long modificationTimestamp = cursor.getLong(COLUMN_INDEX_MODIFICATION_DATE);
+                String formattedTimestamp = DateFormat.format("yyyy-MM-dd HH:mm:ss", modificationTimestamp).toString();
+
+                // 获取时间戳TextView并设置格式化后的时间戳
+                TextView timestampTextView = (TextView) view.findViewById(R.id.timestamp_text);
+                timestampTextView.setText(formattedTimestamp);
+            }
+        };
+
+        setListAdapter(adapter);
+    }
+
+    /**
+     * Method to filter the notes based on the query
+     */
+    private void filterNotes(String query) {
+        String selection = NotePad.Notes.COLUMN_NAME_TITLE + " LIKE ? OR " + NotePad.Notes.COLUMN_NAME_NOTE + " LIKE ?";
+        String[] selectionArgs = { "%" + query + "%", "%" + query + "%" };
+
+        // 设置排序条件
+        String orderBy = sortByTitle ? NotePad.Notes.COLUMN_NAME_TITLE + " ASC" : NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE + " DESC";
+
+        currentCursor = managedQuery(
+                getIntent().getData(),
+                PROJECTION,
+                selection,
+                selectionArgs,
+                orderBy
+        );
+
+        adapter.changeCursor(currentCursor);
+    }
+       
+         
+
 ### 3. **笔记查询功能**
    - **功能描述**：新增了按标题或内容搜索笔记的功能。
    - **实现方式**：用户可以在搜索框中输入关键字，应用会根据标题或内容与搜索词匹配的笔记进行筛选，方便用户快速找到特定笔记。
@@ -26,6 +90,54 @@
       ![查询](images/0031.png)
      ![查询](images/0032.png)
  #### 代码实现：
+ ```
+  @Override
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
+                        String sortOrder) {
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        qb.setTables(NotePad.Notes.TABLE_NAME);
+
+        switch (sUriMatcher.match(uri)) {
+            case NOTES:
+                qb.setProjectionMap(sNotesProjectionMap);
+                break;
+
+            case NOTE_ID:
+                qb.setProjectionMap(sNotesProjectionMap);
+                qb.appendWhere(
+                        NotePad.Notes._ID + "=" +
+                                uri.getPathSegments().get(NotePad.Notes.NOTE_ID_PATH_POSITION));
+                break;
+
+            case LIVE_FOLDER_NOTES:
+                qb.setProjectionMap(sLiveFolderProjectionMap);
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+
+        String orderBy = TextUtils.isEmpty(sortOrder)
+                ? NotePad.Notes.DEFAULT_SORT_ORDER
+                : sortOrder;
+
+        SQLiteDatabase db = mOpenHelper.getReadableDatabase();
+
+        // 进行查询操作，返回 Cursor
+        Cursor c = qb.query(
+                db,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                orderBy
+        );
+
+        c.setNotificationUri(getContext().getContentResolver(), uri);
+        return c;
+    }
+```
 ### 4. **更改记事本背景**
    - **功能描述**：用户现在可以更改记事本界面的背景。
    - **实现方式**：在设置或选项菜单中，用户可以选择不同的背景主题或图片，使记事本界面更加个性化。
