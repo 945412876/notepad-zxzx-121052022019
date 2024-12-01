@@ -15,9 +15,9 @@
    - **功能描述**：笔记现在可以按时间（时间顺序）或标题（字母顺序）进行排序。
    - **实现方式**：用户可以在NoteList界面中的菜单中选择排序方式，笔记会根据选定的方式重新排列，按创建或修改时间排序，或按标题字母排序。
  ####  - **截图展示**
-   ![排序](images/002.png)
-      ![排序（按时间戳）](images/0021.png)
-        ![排序(按照字符)](images/0022.png)
+   ![排序](images/002.png)<br>
+      ![排序（按时间戳）](images/0021.png)<br>
+        ![排序(按照字符)](images/0022.png)<br>
    ####  - **代码实现**
         
          private void setupAdapter() {
@@ -86,10 +86,10 @@
 ### 3. **笔记查询功能**
    - **功能描述**：新增了按标题或内容搜索笔记的功能。
    - **实现方式**：用户可以在搜索框中输入关键字，应用会根据标题或内容与搜索词匹配的笔记进行筛选，方便用户快速找到特定笔记。
-   -  #### 截图展示：
-      ![查询](images/0031.png)
-     ![查询](images/0032.png)
- #### 代码实现：
+     #### 截图展示：
+      ![查询](images/0031.png)<br>
+     ![查询](images/0032.png)<br>
+####  - **代码实现**
  ```
   @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
@@ -142,12 +142,13 @@
    - **功能描述**：用户现在可以更改记事本界面的背景。
    - **实现方式**：在设置或选项菜单中，用户可以选择不同的背景主题或图片，使记事本界面更加个性化。
  #### 截图展示：
-   ![NoteList更改记事本背景（弹出选项）](images/0041.png)
-      ![NoteList更改记事本背景（颜色选择界面）](images/0042.png)
-         ![NoteList更改记事本背景（点击红色）](images/0043.png)
-            ![NoteList更改记事本背景（点击紫色）](images/0041.png)
+   ![NoteList更改记事本背景（弹出选项）](images/0041.png)<br>
+      ![NoteList更改记事本背景（颜色选择界面）](images/0042.png)<br>
+         ![NoteList更改记事本背景（点击红色）](images/0043.png)<br>
+            ![NoteList更改记事本背景（点击紫色）](images/0041.png)<br>
              #### 代码实现：
-```(private void updateBackgroundColor(String color) {
+```
+(private void updateBackgroundColor(String color) {
         findViewById(R.id.noteEditorLayout).setBackgroundColor(Color.parseColor(color));
     }
     private void showColorPickerDialog() {
